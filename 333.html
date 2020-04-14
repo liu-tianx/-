@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+          margin: 0;
+          padding: 0;
+        }
+    
+        #container {
+          width: 363px;
+          height: 400px;
+          margin: 50px auto 0;
+          position: relative;
+        }
+        #pointer >li{
+            list-style: none;
+            float: left;
+            height: 20px;
+            width: 20px;
+            line-height: 20px;
+            text-align: center;
+            margin: 5px;
+            color: white;
+            background:rgba(0,0,0,0.6);
+            cursor: pointer;
+        }
+        #pointer{
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+        #swiper > img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+        #swiper > .active{
+            opacity: 1; 
+            transition: opacity 1s ease;
+        }
+        #pointer >.selected{
+            background-color: red;
+        }
+        span{
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-top: -20px;
+            background-color: rgba(0,0,0,0.6);
+            position: absolute;
+            top: 50%;
+            cursor: pointer;
+        }
+        #left{
+            left: 0px;
+        }
+        #right{
+            right: 0px;
+        }
+        #left::after{
+            content: '';
+            display: inline-block;
+            width: 20px;
+             height: 20px;
+            border-bottom: 3px solid white;
+            border-left: 3px solid white;
+            transform: rotate(45deg);
+            position: absolute;
+            top: 10px;
+            left: 10px;
+           
+        }
+        #right::after{
+            content: '';
+            display: inline-block;
+            width: 20px;
+             height: 20px;
+            border-bottom: 3px solid white;
+            border-right: 3px solid white;
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+      </style>
+</head>
+<body>
+    <div id="container">
+        <div id="swiper">
+            <img class="active" src="../imgs/1.JPG">
+            <img src="../imgs/2.JPG">
+            <img src="../imgs/3.JPG">
+            <img src="../imgs/4.JPG">
+            <img src="../imgs/5.JPG">
+        </div>
+        <ul id="pointer">
+            <li class="selected">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+        <span id="left"></span>
+        <span id="right"></span>
+    </div>
+    <script>
+        var oPinter = document.getElementById('pointer');
+        var aLi = oPinter.getElementsByTagName('li');
+        var oSwiper =document.getElementById('swiper');
+        var aImg =oSwiper.getElementsByTagName('img');
+        var oRight=document.getElementById('right');
+        var oLeft=document.getElementById('left');
+        var oCon = document.getElementById('container')
+        var tag=0;
+        var Timer
+        for(var i=0; i<aLi.length; i++) {
+           aLi[i].index = i
+           aLi[i].onclick = function() {
+           tag=this.index
+           changeSlider()
+        }
+        oRight.onclick=function(){
+            tag++;
+            tag=tag>aLi.length-1?0:tag;
+            changeSlider()
+        }
+        oLeft.onclick=function(){
+            tag--;
+            tag=tag<0?4:tag;
+            changeSlider()
+        }
+        function changeSlider(){
+            for(var i=0;i<aLi.length;i++)
+            {
+                aLi[i].className = ''
+                aImg[i].className = ''
+            }
+            aLi[tag].className='selected';
+            aImg[tag].className='active';
+        }
+            
+        function goSwiper() {
+      Timer=setInterval(function() {
+        oRight.onclick()
+      }, 1000)
+    }
+
+
+    oCon.onmouseover = function() {
+      clearInterval(Timer)
+    }
+
+    oCon.onmouseout = function() {
+      goSwiper()
+    }
+        }
+    
+
+    </script>
+</body>
+</html>
